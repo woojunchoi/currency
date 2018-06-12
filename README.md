@@ -1,4 +1,4 @@
-# HILTON TAKE HOME TEST
+# Currency
 
 ## Front End Technologies:</br>ReactJS, JavaScript, HTML5, CSS3
 ## Back End Technologies:</br>Node, Express, Axios
