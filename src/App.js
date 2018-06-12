@@ -108,7 +108,7 @@ class App extends Component {
                     if (item > 0) {
                         return <div className='app-totalcost' key={i}>${item}</div>
                     }
-                    return <div className='app-totalcost'></div>
+                    return <div className='app-totalcost' key={i}></div>
                 })}
             </div>
         )
