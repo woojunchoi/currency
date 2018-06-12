@@ -94,13 +94,13 @@ class App extends Component {
                 <p>Start Date (MM/DD/YYYY)</p>
                 {/* used regex to receive data with correct format */}
                 <input className='date-input' minLength='10' maxLength='10'
-                    required='required' type="text" name="input" placeholder="MM-DD-YYYY"
+                    required='required' type="text" name="input" placeholder="MM/DD/YYYY"
                     onChange={(e) => this.startChange(e)} required pattern="(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\d\d" />
 
                 <p>End Date (MM/DD/YYYY)</p>
                 {/* used regex to receive data with correct format */}
                 <input className='date-input' minLength='10' maxLength='10'
-                    required='required' ref='endInput' type="text" name="input" placeholder="MM-DD-YYYY"
+                    required='required' ref='endInput' type="text" name="input" placeholder="MM/DD/YYYY"
                     onChange={(e) => this.endChange(e)} required pattern="(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\d\d" />
 
                 <button className='app-button' onClick={this.submit}>submit</button>
