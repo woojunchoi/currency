@@ -11,13 +11,13 @@ const PORT = process.env.PORT || 3000;
 
 
 app.use(webpackDevMiddleware(compiler, {
-  hot: true,
-  filename: 'bundle.js',
-  publicPath: '/',
-  stats: {
-    colors: true,
-  },
-  historyApiFallback: true,
+    hot: true,
+    filename: 'bundle.js',
+    publicPath: '/',
+    stats: {
+        colors: true,
+    },
+    historyApiFallback: true,
 }));
 
 /**
@@ -55,44 +55,55 @@ app.use(express.static(__dirname + '/public'));
  */
 app.listen(PORT, console.log('listening port ' + PORT));
 
-
-app.get('/calculate/:startyear/:startmonth/:startday/:endyear/:endmonth/:endday', function(req,res) {
+//takes GET request from /calculate route with params
+//used GET request with params because data doesn't need to be secure
+app.get('/calculate/:startyear/:startmonth/:startday/:endyear/:endmonth/:endday', function (req, res) {
     let totalCost = 0;
-    let weekCounter = 1
-    Date.prototype.addDays = function(days) {
+
+    //made another prototype method of date object to caclulate days to add on start date
+    Date.prototype.addDays = function (days) {
         var dat = new Date(this.valueOf());
         dat.setDate(dat.getDate() + days);
         return dat;
-      }
-      
-      function price(date, n) {
+    }
+    
+    //date argument = startdate n argument = difference between startdate and enddate
+    function price(date, n) {
+        //price list based on number of week
         const weeklyPrices = {
-          0: 5,
-          1: 10,
-          2: 15,
-          3: 20,
-          4: 25,
-        } 
-      
-        let sum = 0;
-        for (let i = 0; i < n; i++) {
-          const currentDate = date.addDays(i)
-          const dayOfWeek = currentDate.getDay()
-          if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-            const dayOfMonth = currentDate.getDate()
-            const currentPrice = weeklyPrices[Math.floor(dayOfMonth / 8)]
-            sum += currentPrice
-          }
+            0: 5,
+            1: 10,
+            2: 15,
+            3: 20,
+            4: 25,
         }
-      
-        return sum / 100;  
-      }
-      
-    const startDate = new Date(req.params.startyear, req.params.startmonth-1, req.params.startday)
-    const endDate = new Date(req.params.endyear, req.params.endmonth-1, req.params.endday) 
+
+        let sum = 0;
+        //for loop while i < difference between starting date and ending date
+        for (let i = 0; i < n; i++) {
+            // use addDays method to calculate currentdate
+            const currentDate = date.addDays(i)
+            // get day index out of currentDate
+            const dayOfWeek = currentDate.getDay()
+            //check if day index is sunday or saturday
+            if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                const dayOfMonth = currentDate.getDate()
+                //need to improve this part. since I cannot divide it by 7, I cannot get .25 price values. 
+                //if I devide it by 7, 7th day is calculated as next week's price
+                const currentPrice = weeklyPrices[Math.floor(dayOfMonth / 8)]
+                sum += currentPrice
+            }
+        }
+        return sum / 100;
+    }
+
+    const startDate = new Date(req.params.startyear, req.params.startmonth - 1, req.params.startday)
+    const endDate = new Date(req.params.endyear, req.params.endmonth - 1, req.params.endday)
     const diffDay = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
 
-    totalCost = price(startDate,diffDay+1)
-    // if(startDate.getDay() > 0 && startDate.getDay() <= 5 && start)
+    //pass startdate and diffday as arguments. added 1 because startdate is included in calculation
+    totalCost = price(startDate, diffDay + 1)
+
+    //send calculation back to client side
     res.send(JSON.stringify([totalCost]))
 })
