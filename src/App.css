@@ -1,0 +1,6 @@
+.date-input:valid {
+    color: green;
+}
+.date-input:invalid {
+    color: red;
+}

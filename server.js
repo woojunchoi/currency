@@ -36,3 +36,9 @@ app.use(express.static(__dirname + '/public'));
  * Listen to Port
  */
 app.listen(PORT, console.log('listening port ' + PORT));
+
+
+app.get('/calculate', function(req,res) {
+    console.log('hiiii')
+    res.send('hellooooo')
+})
