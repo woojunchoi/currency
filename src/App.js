@@ -11,7 +11,8 @@ class App extends Component {
             startYear: 0,
             endMonth: 0,
             endDay: 0,
-            endYear: 0
+            endYear: 0,
+            totalCost: [0]
         }
     }
 
@@ -36,55 +37,70 @@ class App extends Component {
         console.log(
             'getting here?'
         )
-        if(this.state.startYear > this.state.endYear) {
+        if (this.state.startYear > this.state.endYear) {
             alert('start year value has to be less than end year')
             console.log(this.state.endYear, this.state.startYear)
             this.setState({
-                endYear:0,
-                endDay:0,
-                endMonth:0
+                endYear: 0,
+                endDay: 0,
+                endMonth: 0
             })
-            this.refs.endInput.value =''
+            this.refs.endInput.value = ''
             return;
         }
-        if(this.state.startMonth > this.state.endMonth && this.state.startYear >= this.state.endYear) {
+        if (this.state.startMonth > this.state.endMonth && this.state.startYear >= this.state.endYear) {
             alert('start month value has to be less than end month')
             this.setState({
-                endYear:0,
-                endDay:0,
-                endMonth:0
+                endYear: 0,
+                endDay: 0,
+                endMonth: 0
             })
-            this.refs.endInput.value =''
+            this.refs.endInput.value = ''
             return;
         }
-        if(this.state.startDay >= this.state.endDay && this.state.startYear >= this.state.endYear && this.state.startMonth >= this.state.endMonth) {
+        if (this.state.startDay >= this.state.endDay && this.state.startYear >= this.state.endYear && this.state.startMonth >= this.state.endMonth) {
             alert('start day value has to be less than end day')
             this.setState({
-                endYear:0,
-                endDay:0,
-                endMonth:0
+                endYear: 0,
+                endDay: 0,
+                endMonth: 0
             })
-            this.refs.endInput.value =''
+            this.refs.endInput.value = ''
             return;
         }
-        return axios.get('/calculate')
-        .then((response) => {console.log(response)})
-        .catch((error) => {
-            console.log(error)})
+        console.log(this.state)
+        return axios.get(`/calculate/${this.state.startYear}/${this.state.startMonth}/${this.state.startDay}/${this.state.endYear}/${this.state.endMonth}/${this.state.endDay}`)
+            .then((response) => {
+                this.setState({
+                    totalCost: response.data
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     render() {
         return (
             <div className='container'>
-                <p>start date (form MM/DD/YYYY)</p>
+                <h1>Bob's <span className='banana'>Banana</span> Budget</h1>
+                <p>Start Date (MM/DD/YYYY)</p>
                 <input className='date-input' minLength='10' maxLength='10'
                     required='required' type="text" name="input" placeholder="MM-DD-YYYY"
                     onChange={(e) => this.startChange(e)} required pattern="(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d" />
-                <p>end date (form MM/DD/YYYY)</p>
+
+                <p>End Date (MM/DD/YYYY)</p>
                 <input className='date-input' minLength='10' maxLength='10'
                     required='required' ref='endInput' type="text" name="input" placeholder="MM-DD-YYYY"
                     onChange={(e) => this.endChange(e)} required pattern="(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d" />
-                <button onClick={this.submit}>submit</button>
+
+                <button className='app-button' onClick={this.submit}>submit</button>
+                {this.state.totalCost.map((item, i) => {
+                    if (item > 0) {
+                        return <div className='app-totalcost' key={i}>${item}</div>
+                    }
+                    return <div className='app-totalcost'></div>
+                })}
             </div>
         )
     }
