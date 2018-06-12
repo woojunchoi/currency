@@ -73,9 +73,12 @@ class App extends Component {
             this.refs.endInput.value = ''
             return;
         }
-
+        const startDate = new Date(this.state.startYear, this.state.startMonth-1, this.state.startDay)
+        const endDate = new Date(this.state.endYear, this.state.endMonth-1, this.state.endDay)
+        const diffDay = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
         //used http get method because the data doesn't need to be secure (passed variables as params)
-        return axios.get(`/calculate/${this.state.startYear}/${this.state.startMonth}/${this.state.startDay}/${this.state.endYear}/${this.state.endMonth}/${this.state.endDay}`)
+
+        return axios.get(`/calculate/${this.state.startMonth}/${this.state.startDay}/${this.state.startYear}/${diffDay}`)
             .then((response) => {
                 //update state with the value from the server
                 this.setState({

@@ -57,7 +57,7 @@ app.listen(PORT, console.log('listening port ' + PORT));
 
 //takes GET request from /calculate route with params
 //used GET request with params because data doesn't need to be secure
-app.get('/calculate/:startyear/:startmonth/:startday/:endyear/:endmonth/:endday', function (req, res) {
+app.get('/calculate/:startMonth/:startDay/:startYear/:diffDay', function (req, res) {
     let totalCost = 0;
 
     //made another prototype method of date object to caclulate days to add on start date
@@ -96,13 +96,11 @@ app.get('/calculate/:startyear/:startmonth/:startday/:endyear/:endmonth/:endday'
         }
         return sum / 100;
     }
+    const startDate = new Date(req.params.startYear, req.params.startMonth - 1, req.params.startDay)
 
-    const startDate = new Date(req.params.startyear, req.params.startmonth - 1, req.params.startday)
-    const endDate = new Date(req.params.endyear, req.params.endmonth - 1, req.params.endday)
-    const diffDay = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
-
+    // console.log(startDate, req.params.diffDay)
     //pass startdate and diffday as arguments. added 1 because startdate is included in calculation
-    totalCost = price(startDate, diffDay + 1)
+    totalCost = price(startDate, parseInt(req.params.diffDay)+1)
 
     //send calculation back to client side
     res.send(JSON.stringify([totalCost]))
