@@ -3,7 +3,7 @@ body {
 }
 
 .date-input:valid {
-    color: green;
+    color: black;
 }
 
 .date-input:invalid {
