@@ -1,6 +1,11 @@
+body {
+    background-color:#f1f2ed;
+}
+
 .date-input:valid {
     color: green;
 }
+
 .date-input:invalid {
     color: #a5a6a3
 }
@@ -14,9 +19,11 @@
     flex-direction: column;
     line-height:1;
 }
+
 .banana {
     color:#f4cb2f;
 }
+
 .app-button {
     margin-top:15px;
     padding:10px 15px;
@@ -27,16 +34,19 @@
     background-color:#f1f2ed;
     cursor:pointer;
 }
+
 .app-button:hover {
     background:black;
     color:white;
 }
+
 .app-totalcost {
     height:300px;
     padding:20px;
     font-weight:400;
     color:black;
 }
+
 input {
     text-align:center;
     background-color: white;
